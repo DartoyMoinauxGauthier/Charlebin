@@ -1,0 +1,95 @@
+#!/bin/bash
+
+# Pre-commit hook pour CharleBin
+# - Fixe automatiquement les erreurs de style avec PHP CS Fixer
+# - Ajoute les fichiers corrigés au staging area
+# - Bloque le commit si PHPMD détecte des erreurs critiques
+
+echo "🔍 Pre-commit hook activé..."
+
+# Récupérer la liste des fichiers PHP modifiés et en staging
+PHP_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.php$')
+
+if [ -z "$PHP_FILES" ]; then
+    echo "✅ Aucun fichier PHP à vérifier"
+    exit 0
+fi
+
+echo "📝 Fichiers PHP détectés :"
+echo "$PHP_FILES"
+
+# ============================================
+# 1. PHP CS Fixer - Correction automatique
+# ============================================
+echo ""
+echo "🔧 Exécution de PHP CS Fixer..."
+
+# Vérifier si PHP CS Fixer est installé
+if [ ! -f "./vendor/bin/php-cs-fixer" ]; then
+    echo "⚠️  PHP CS Fixer non trouvé. Installation..."
+    composer require --dev friendsofphp/php-cs-fixer
+fi
+
+# Appliquer PHP CS Fixer sur chaque fichier
+HAS_FIXES=0
+for FILE in $PHP_FILES; do
+    if [ -f "$FILE" ]; then
+        echo "  → Traitement de $FILE"
+        ./vendor/bin/php-cs-fixer fix "$FILE" --rules=@PSR12 --quiet
+        
+        # Vérifier si le fichier a été modifié
+        if ! git diff --quiet "$FILE"; then
+            echo "    ✓ Corrections appliquées sur $FILE"
+            # Ajouter les modifications au staging area
+            git add "$FILE"
+            HAS_FIXES=1
+        fi
+    fi
+done
+
+if [ $HAS_FIXES -eq 1 ]; then
+    echo "✅ Fichiers corrigés et ajoutés au commit"
+else
+    echo "✅ Aucune correction nécessaire"
+fi
+
+# ============================================
+# 2. PHPMD - Vérification stricte
+# ============================================
+echo ""
+echo "🔍 Exécution de PHPMD (PHP Mess Detector)..."
+
+PHPMD_ERRORS=0
+
+for FILE in $PHP_FILES; do
+    if [ -f "$FILE" ]; then
+        # Exclure les fichiers de vendor et de test
+        if [[ ! "$FILE" =~ ^vendor/ ]] && [[ ! "$FILE" =~ ^tst/ ]]; then
+            echo "  → Analyse de $FILE"
+            
+            # Exécuter PHPMD avec des règles strictes
+            ./vendor/bin/phpmd "$FILE" text codesize,unusedcode,naming,design,controversial --suffixes php 2>&1
+            
+            if [ $? -ne 0 ]; then
+                PHPMD_ERRORS=1
+            fi
+        fi
+    fi
+done
+
+# ============================================
+# 3. Décision finale
+# ============================================
+echo ""
+if [ $PHPMD_ERRORS -eq 1 ]; then
+    echo "❌ COMMIT BLOQUÉ : Des problèmes de qualité de code ont été détectés par PHPMD"
+    echo ""
+    echo "💡 Conseils :"
+    echo "   - Corrigez les erreurs signalées par PHPMD"
+    echo "   - Ou utilisez 'git commit --no-verify' pour forcer le commit (déconseillé)"
+    exit 1
+else
+    echo "✅ Toutes les vérifications sont passées"
+    echo "✅ Commit autorisé"
+    exit 0
+fi
