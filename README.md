@@ -1,110 +1,125 @@
-# [![PrivateBin](https://cdn.rawgit.com/PrivateBin/assets/master/images/preview/logoSmall.png)](https://privatebin.info/)
+# Comptes-rendus de Gauthier, ressource R4.02 - Qualité de développement #
 
-*Current version: 2.0.3*
+# CharleBin
 
-**PrivateBin** is a minimalist, open source online
-[pastebin](https://en.wikipedia.org/wiki/Pastebin)
-where the server has zero knowledge of stored data.
+CharleBin est un projet pédagogique basé sur **PrivateBin**, une plateforme de "pastebin" minimaliste, open-source et chiffrée. 
 
-Data is encrypted and decrypted in the browser using 256bit AES in
-[Galois Counter mode](https://en.wikipedia.org/wiki/Galois/Counter_Mode).
+### À quoi ça sert ?
+Il permet de partager des notes ou du code de manière sécurisée. Contrairement aux services classiques, les données sont chiffrées et déchiffrées directement dans le navigateur du client. Le serveur ne possède jamais la clé de déchiffrement, garantissant une confidentialité totale (Zero-Knowledge).
 
-This is a fork of ZeroBin, originally developed by
-[Sébastien Sauvage](https://github.com/sebsauvage/ZeroBin). PrivateBin was
-refactored to allow easier and cleaner extensions and has many additional
-features.
+### Fonctionnalités principales
+- Chiffrement côté client (AES-256).
+- Définition d'une durée d'expiration des messages.
+- Protection par mot de passe optionnelle.
+- Support du format Markdown et de la coloration syntaxique.
 
-## What PrivateBin provides
+### Installation locale
+1. Clonez le dépôt.
+2. Lancez l'installation des dépendances : `make install`.
+3. Démarrez le projet : `make start`.
 
-+ As a server administrator you don't have to worry if your users post content
-  that is considered illegal in your country. You have plausible deniability of
-  any of the pastes content. If requested or enforced, you can delete any paste
-  from your system.
 
-+ Pastebin-like system to store text documents, code samples, etc.
 
-+ Encryption of data sent to server.
+## Séance 2 ##
 
-+ Possibility to set a password which is required to read the paste. It further
-  protects a paste and prevents people stumbling upon your paste's link
-  from being able to read it without the password.
+### Transparents 01 - Mise en place de l'environnement distant ###
 
-## What it doesn't provide
+Mes manipulations :
 
-- As a user you have to trust the server administrator not to inject any
-  malicious code. For security, a PrivateBin installation *has to be used over*
-  *HTTPS*! Otherwise you would also have to trust your internet provider, and
-  any jurisdiction the traffic passes through. Additionally the instance should
-  be secured by
-  [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security). It can
-  use traditional certificate authorities and/or use a
-  [DNSSEC](https://en.wikipedia.org/wiki/Domain_Name_System_Security_Extensions)
-  protected
-  [DANE](https://en.wikipedia.org/wiki/DNS-based_Authentication_of_Named_Entities)
-  record.
+ - Configuration d'une clé SSH publique sur GitHub et activation de l'agent SSH pour éviter la saisie répétée du mot de passe.
+ - Création d'un repository nommé **CharleBin** sur l'interface GitHub.
+ - Liaison du repository local au nouveau repository distant à l'aide de la commande `git remote set-url`.
+ - Envoi de l'intégralité du contenu de la branche `main` locale vers le serveur GitHub.
 
-- The “key” used to encrypt the paste is part of the URL (in
-  [the fragment part separated by the `#`](https://en.wikipedia.org/wiki/URL#fragment)).
-  If you publicly post the URL of a paste that is not password-protected, anyone
-  can read it.
-  Use a password if you want your paste to remain private. In that case, make
-  sure to use a strong password and share it privately and end-to-end-encrypted.
+Il y avait du code que voilà :
 
-- A server admin can be forced to hand over access logs to the authorities.
-  PrivateBin encrypts your text and the discussion contents, but who accessed a
-  paste (first) might still be disclosed via access logs.
+```bash
+git remote set-url origin git@github.com:DartoyMoinauxGauthier/CharleBin.git
+git push -u origin main
+```
 
-- In case of a server breach your data is secure as it is only stored encrypted
-  on the server. However, the server could be abused or the server admin could
-  be legally forced into sending malicious code to their users, which logs
-  the decryption key and sends it to a server when a user accesses a paste.
-  Therefore, do not access any PrivateBin instance if you think it has been
-  compromised. As long as no user accesses this instance with a previously
-  generated URL, the content can't be decrypted.
+### Transparents 02 - Synchronisation via GitHub ###
 
-## Options
+Mes manipulations :
 
-Some features are optional and can be enabled or disabled in the [configuration
-file](https://github.com/PrivateBin/PrivateBin/wiki/Configuration):
+ - Modification du titre de la page de "PrivateBin" vers "CharleBin" directement dans le fichier lib/Configuration.php via l'interface web de GitHub.
+ - Constat que le changement fait sur GitHub n'est pas présent localement.
+ - Utilisation de `git pull` pour rapatrier les modifications et synchroniser le répertoire de travail.
 
-* Password protection
+### Transparents 03 - Ouverture d'une Pull Request (PR) ###
 
-* Discussions, anonymous or with nicknames and IP based identicons or vizhashes
+Mes manipulations :
 
-* Expiration times, including a "forever" and "burn after reading" option
+ - Vérification de l'état du dépôt avec `git status`.
+ - Création d'une nouvelle branche de fonctionnalité avec `git switch -C`.
+ - Modification du code pour supprimer le footer de PrivateBin.
+ - Envoi de la branche sur GitHub avec `git push -u origin` et ouverture de la Pull Request sur l'interface sans effectuer la fusion.
 
-* Markdown format support for HTML formatted pastes, including preview function
+### Transparents 04 - Documentation et Règles de contribution ###
 
-* Syntax highlighting for source code using prettify.js, including 4 prettify
-  themes
+Mes manipulations :
 
-* File upload support, image, media and PDF preview (disabled by default, size
-  limit adjustable)
+ - Création d'un fichier README.md présentant le projet, ses pré-requis (Docker, PHP) et la procédure d'installation.
+ - Rédaction d'un fichier CONTRIBUTING.md expliquant les règles de contribution (scénario de PR, respect des linters).
+ - Mise en place d'un template de Pull Request pour structurer les retours des contributeurs (description du bug, solution, etc.).
 
-* Templates: By default there are bootstrap5, bootstrap CSS and darkstrap
-  to choose from and it is easy to adapt these to your own websites layout or
-  create your own.
+## Séance 3 ##
 
-* Translation system and automatic browser language detection (if enabled in
-  browser)
+### Transparents 01 - Installation des outils de qualité ###
 
-* Language selection (disabled by default, as it uses a session cookie)
+Mes manipulations :
 
-* QR code for paste URLs, to easily transfer them over to mobile devices
+ - Installation de PHP Code Sniffer pour vérifier les standards PSR et de PHP Mess Detector pour analyser la complexité du code.
+ - Création d'une target `lint` dans le Makefile pour exécuter les trois linters (PHP Lint, PHPCS, PHPMD) en une seule commande.
+ - Correction de plus de 5 erreurs de style et de complexité signalées par les outils.
 
-## Further resources
+Il y avait du code que voilà :
 
-* [FAQ](https://github.com/PrivateBin/PrivateBin/wiki/FAQ)
+```makefile
+lint:
+	php -l ./lib/*.php
+	./vendor/bin/phpcs --extensions=php ./lib/
+	./vendor/bin/phpmd ./lib ansi codesize,unusedcode,naming
+```
 
-* [Installation guide](https://github.com/PrivateBin/PrivateBin/blob/master/doc/Installation.md#installation)
+### Transparents 02 - Automatisation par Pre-commit Hooks ###
 
-* [Configuration guide](https://github.com/PrivateBin/PrivateBin/wiki/Configuration)
+Mes manipulations :
 
-* [Templates](https://github.com/PrivateBin/PrivateBin/wiki/Templates)
+ - Configuration d'un script bash dans `.git/hooks/` pour créer un pre-commit hook.
+ - Utilisation de PHP CS Fixer pour corriger automatiquement les erreurs de formatage avant le commit.
+ - Ajout d'une condition pour interdire le commit si PHP Mess Detector détecte des violations majeures.
 
-* [Translation guide](https://github.com/PrivateBin/PrivateBin/wiki/Translation)
+### Transparents 03 - Intégration Continue (CI) ###
 
-* [Developer guide](https://github.com/PrivateBin/PrivateBin/wiki/Development)
+Mes manipulations :
 
-Run into any issues? Have ideas for further developments? Please
-[report](https://github.com/PrivateBin/PrivateBin/issues) them!
+ - Mise en place d'une GitHub Action de lint pour automatiser la vérification sur chaque Pull Request.
+ - Activation de la protection de branche sur `main` dans les réglages GitHub pour empêcher les commits directs et exiger un passage réussi de la CI.
+
+## Séance 4 ##
+
+### Transparents 01 - Refactoring assisté par IA ###
+
+Mes manipulations :
+
+ - Installation de l'extension GitHub Copilot sur VS Code.
+ - Réécriture de la méthode `formatHumanReadableTime` dans le fichier `lib/Filter.php`.
+ - Test de différentes suggestions de l'IA et analyse critique des résultats produits.
+
+### Transparents 02 - Inspection du navigateur et Sécurité ###
+
+Mes manipulations :
+
+ - Utilisation des outils de développement (F12) pour inspecter le DOM et récupérer la valeur d'un champ de mot de passe masqué.
+ - Analyse des requêtes dans l'onglet "Network" pour prouver que les données sont chiffrées côté client avant l'envoi au serveur.
+
+## Séance 5 ##
+
+### Transparents 01 - Tests End-to-End avec Cypress ###
+
+Mes manipulations :
+
+ - Installation de Cypress et initialisation du projet de test.
+ - Écriture d'un scénario de test complet : création d'un paste, récupération de son URL unique, reconnexion et vérification que le contenu affiché correspond au message initial.
+ - Intégration de la suite de tests au dépôt Git.
