@@ -54,3 +54,13 @@ help: ## Displays these usage instructions.
 	@echo
 	@echo "Specify one or multiple of the following targets and they will be processed in the given order:"
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "%-16s%s\n", $$1, $$2}' $(MAKEFILE_LIST)
+
+lint:
+	# 1. PHP Lint : Vérifie les erreurs de syntaxe de tous les fichiers .php
+	find . -type f -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
+	
+	# 2. PHPCS : Vérifie les standards PSR-12 sur le dossier lib 
+	./vendor/bin/phpcs --standard=PSR12 --extensions=php ./lib/
+	
+	# 3. PHPMD : Analyse la complexité et le code inutilisé 
+	./vendor/bin/phpmd ./lib ansi codesize,unusedcode,naming
