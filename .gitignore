@@ -13,6 +13,7 @@ doc/*
 !doc/*.md
 
 # Ignore vendor dir of Composer except PHP files
+/vendor/
 vendor/*.*
 vendor/*/*.*
 vendor/*/*/*.*
