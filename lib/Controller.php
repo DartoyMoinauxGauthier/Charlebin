@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * PrivateBin
  *
@@ -186,7 +189,7 @@ class Controller
     private function _init()
     {
         $this->_model   = new Model($this->_conf);
-        $this->_request = new Request;
+        $this->_request = new Request();
         $this->_urlBase = $this->_request->getRequestUri();
 
         $this->_setDefaultLanguage();
@@ -451,7 +454,7 @@ class Controller
             $this->_conf->getKey('cspheader')
         );
 
-        $page = new View;
+        $page = new View();
         $page->assign('CSPHEADER', $metacspheader);
         $page->assign('ERROR', I18n::_($this->_error));
         $page->assign('NAME', $this->_conf->getKey('name'));
@@ -501,13 +504,15 @@ class Controller
      */
     private function _jsonld($type)
     {
-        if (!in_array($type, array(
+        if (
+            !in_array($type, array(
             'comment',
             'commentmeta',
             'paste',
             'pastemeta',
             'types',
-        ))) {
+            ))
+        ) {
             $type = '';
         }
         $content = '{}';

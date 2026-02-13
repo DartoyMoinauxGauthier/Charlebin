@@ -80,6 +80,45 @@ lint:
 	php -l ./lib/*.php
 	./vendor/bin/phpcs --extensions=php ./lib/
 	./vendor/bin/phpmd ./lib ansi codesize,unusedcode,naming
+	kyotaro@Gotye:~/QualiteDev/Charlebin/CharleBin$ ./vendor/bin/phpcbf --standard=PSR12 ./lib/
+
+PHPCBF RESULT SUMMARY
+---------------------------------------------------------------------------------------------------------
+FILE                                                                                     FIXED  REMAINING
+---------------------------------------------------------------------------------------------------------
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Json.php                                3      2
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/I18n.php                                8      16
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Proxy/YourlsProxy.php                   3      4
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Proxy/ShlinkProxy.php                   3      4
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Proxy/AbstractProxy.php                 6      11
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/TemplateSwitcher.php                    3      4
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/FormatV2.php                            6      1
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Persistence/TrafficLimiter.php          2      6
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Persistence/AbstractPersistence.php     3      2
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Persistence/PurgeLimiter.php            3      2
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Persistence/ServerSalt.php              3      2
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Exception/TranslatedException.php       3      2
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Exception/JsonException.php             3      1
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Request.php                             7      13
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Data/GoogleCloudStorage.php             3      8
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Data/AbstractData.php                   3      3
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Data/S3Storage.php                      3      11
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Data/Filesystem.php                     3      14
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Data/Database.php                       15     23
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Filter.php                              3      1
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Model.php                               3      3
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Model/Paste.php                         3      6
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Model/Comment.php                       3      3
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Model/AbstractModel.php                 3      9
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Vizhash16x16.php                        3      4
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Configuration.php                       3      21
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/View.php                                3      3
+/home/kyotaro/QualiteDev/Charlebin/CharleBin/lib/Controller.php                          8      30
+---------------------------------------------------------------------------------------------------------
+A TOTAL OF 115 ERRORS WERE FIXED IN 28 FILES
+---------------------------------------------------------------------------------------------------------
+
+Time: 5.34 secs; Memory: 16MB
 ```
 
 ### Transparents 02 - Automatisation par Pre-commit Hooks ###

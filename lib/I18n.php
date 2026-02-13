@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * PrivateBin
  *
@@ -177,7 +180,8 @@ class I18n
         // find a translation file matching the browsers language preferences
         else {
             self::$_language = self::_getMatchingLanguage(
-                self::getBrowserLanguages(), $availableLanguages
+                self::getBrowserLanguages(),
+                $availableLanguages
             );
         }
 
@@ -229,10 +233,13 @@ class I18n
         if (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
             $languageRanges = explode(',', trim($_SERVER['HTTP_ACCEPT_LANGUAGE']));
             foreach ($languageRanges as $languageRange) {
-                if (preg_match(
-                    '/(\*|[a-zA-Z0-9]{1,8}(?:-[a-zA-Z0-9]{1,8})*)(?:\s*;\s*q\s*=\s*(0(?:\.\d{0,3})|1(?:\.0{0,3})))?/',
-                    trim($languageRange), $match
-                )) {
+                if (
+                    preg_match(
+                        '/(\*|[a-zA-Z0-9]{1,8}(?:-[a-zA-Z0-9]{1,8})*)(?:\s*;\s*q\s*=\s*(0(?:\.\d{0,3})|1(?:\.0{0,3})))?/',
+                        trim($languageRange),
+                        $match
+                    )
+                ) {
                     if (!isset($match[2])) {
                         $match[2] = '1.0';
                     } else {

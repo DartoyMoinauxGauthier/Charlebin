@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * PrivateBin
  *
@@ -118,11 +121,13 @@ class FormatV2
         }
 
         // require only the key 'expire' in the metadata of pastes
-        if (!$isComment && (
+        if (
+            !$isComment && (
             count($message['meta']) === 0 ||
             !array_key_exists('expire', $message['meta']) ||
             count($message['meta']) > 1
-        )) {
+            )
+        ) {
             return false;
         }
 

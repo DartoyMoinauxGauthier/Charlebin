@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * PrivateBin
  *
@@ -54,7 +57,8 @@ abstract class AbstractProxy
             return;
         }
 
-        if (!str_starts_with($link, $conf->getKey('basepath') . '?') ||
+        if (
+            !str_starts_with($link, $conf->getKey('basepath') . '?') ||
             parse_url($link, PHP_URL_HOST) !== parse_url($conf->getKey('basepath'), PHP_URL_HOST)
         ) {
             $this->_error = 'Trying to shorten a URL that isn\'t pointing at our instance.';
@@ -69,7 +73,9 @@ abstract class AbstractProxy
             return;
         }
 
-        $data = file_get_contents($proxyUrl, false,
+        $data = file_get_contents(
+            $proxyUrl,
+            false,
             stream_context_create(
                 array(
                     'http' => $this->_getProxyPayload($conf, $link),
