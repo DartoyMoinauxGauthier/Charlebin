@@ -35,21 +35,21 @@ class Controller
      *
      * @const string
      */
-    const VERSION = '2.0.3';
+    public const VERSION = '2.0.3';
 
     /**
      * minimal required PHP version
      *
      * @const string
      */
-    const MIN_PHP_VERSION = '7.4.0';
+    public const MIN_PHP_VERSION = '7.4.0';
 
     /**
      * show the same error message if the document expired or does not exist
      *
      * @const string
      */
-    const GENERIC_ERROR = 'Document does not exist, has expired or has been deleted.';
+    public const GENERIC_ERROR = 'Document does not exist, has expired or has been deleted.';
 
     /**
      * configuration
@@ -424,7 +424,14 @@ class Controller
         // label all the expiration options
         $expire = array();
         foreach ($this->_conf->getSection('expire_options') as $time => $seconds) {
-            $expire[$time] = ($seconds === 0) ? I18n::_(ucfirst($time)) : Filter::formatHumanReadableTime($time);
+            if ($seconds === 0) {
+                $expire[$time] = I18n::_(ucfirst($time));
+            } else {
+                if (preg_match('/^(\d+) *(\w+)$/', $time, $m) !== 1) {
+                    throw new Exception("Error parsing time format '$time'", 30);
+                }
+                $expire[$time] = Filter::formatHumanReadableTime((int) $m[1], $m[2]);
+            }
         }
 
         // translate all the formatter options

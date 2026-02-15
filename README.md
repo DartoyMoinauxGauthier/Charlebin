@@ -150,7 +150,7 @@ Mes manipulations :
 
 Mes manipulations :
 
- - Utilisation des outils de développement (F12) pour inspecter le DOM et récupérer la valeur d'un champ de mot de passe masqué.
+ - Utilisation des outils de développement (F12) pour inspecter le DOM et récupérer la valeur d'un champ de mot de passe masqué. En changeant type passxord en txt
  - Analyse des requêtes dans l'onglet "Network" pour prouver que les données sont chiffrées côté client avant l'envoi au serveur.
 
 ## Séance 5 ##

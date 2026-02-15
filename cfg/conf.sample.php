@@ -1,16 +1,14 @@
-;<?php http_response_code(403); 
-; config file for PrivateBin
-;
-; An explanation of each setting can be find online at https://github.com/PrivateBin/PrivateBin/wiki/Configuration.
+<?php http_response_code(403); /*
+# config file for PrivateBin
+#
+# An explanation of chaque paramètre est disponible en ligne : https://github.com/PrivateBin/PrivateBin/wiki/Configuration.
 
 [main]
-; (optional) set a project name to be displayed on the website
-; name = "PrivateBin"
+# (optionnel) nom du projet affiché sur le site
+# name = "PrivateBin"
 
-; The full URL, with the domain name and directories that point to the
-; PrivateBin files, including an ending slash (/). This URL is essential to
-; allow Opengraph images to be displayed on social networks.
-; basepath = "https://privatebin.example.com/"
+# URL complète (avec slash final) pointant vers PrivateBin, nécessaire pour les images Opengraph.
+# basepath = "https://privatebin.example.com/"
 
 ; enable or disable the discussion feature, defaults to true
 discussion = true
@@ -18,10 +16,9 @@ discussion = true
 ; preselect the discussion feature, defaults to false
 opendiscussion = false
 
-; enable or disable the display of dates & times in the comments, defaults to true
-; Note that internally the creation time will still get tracked in order to sort
-; the comments by creation time, but you can choose not to display them.
-; discussiondatedisplay = false
+# Afficher ou non la date/heure dans les commentaires (par défaut : true)
+# La date de création reste enregistrée pour le tri, même si non affichée.
+# discussiondatedisplay = false
 
 ; enable or disable the password feature, defaults to true
 password = true
@@ -32,22 +29,21 @@ fileupload = false
 ; preselect the burn-after-reading feature, defaults to false
 burnafterreadingselected = false
 
-; which display mode to preselect by default, defaults to "plaintext"
-; make sure the value exists in [formatter_options]
+# Mode d'affichage préselectionné par défaut ("plaintext" par défaut)
+# La valeur doit exister dans [formatter_options]
 defaultformatter = "plaintext"
 
-; (optional) set a syntax highlighting theme, as found in css/prettify/
-; syntaxhighlightingtheme = "sons-of-obsidian"
+# (optionnel) thème de coloration syntaxique (voir css/prettify/)
+# syntaxhighlightingtheme = "sons-of-obsidian"
 
 ; size limit per document or comment in bytes, defaults to 10 Megabytes
 sizelimit = 10000000
 
-; by default PrivateBin use "bootstrap5" template (tpl/bootstrap5.php).
-; Optionally you can enable the template selection menu, which uses
-; a session cookie to store the choice until the browser is closed.
+# Par défaut, PrivateBin utilise le template "bootstrap5" (tpl/bootstrap5.php).
+# Vous pouvez activer le menu de sélection de template (stocké en cookie de session).
 templateselection = false
 
-; List of available for selection templates when "templateselection" option is enabled
+# Liste des templates disponibles si "templateselection" est activé
 availabletemplates[] = "bootstrap5"
 availabletemplates[] = "bootstrap"
 availabletemplates[] = "bootstrap-page"
@@ -56,54 +52,39 @@ availabletemplates[] = "bootstrap-dark-page"
 availabletemplates[] = "bootstrap-compact"
 availabletemplates[] = "bootstrap-compact-page"
 
-; set the template your installs defaults to, defaults to "bootstrap5" (tpl/bootstrap5.php), also
-; bootstrap template (tpl/bootstrap.php) and it's variants: "bootstrap-dark", "bootstrap-compact", "bootstrap-page",
-; which can be combined with "-dark" and "-compact" for "bootstrap-dark-page",
-; "bootstrap-compact-page" - previews at:
-; https://privatebin.info/screenshots.html
-; template = "bootstrap5"
+# Template par défaut de l'installation (voir tpl/), exemples : "bootstrap5", "bootstrap-dark", "bootstrap-compact"…
+# Prévisualisations : https://privatebin.info/screenshots.html
+# template = "bootstrap5"
 
-; (optional) info text to display
-; use single, instead of double quotes for HTML attributes
-;info = "More information on the <a href='https://privatebin.info/'>project page</a>."
+# (optionnel) texte d'info à afficher (utiliser des guillemets simples pour les attributs HTML)
+# info = "Plus d'informations sur la <a href='https://privatebin.info/'>page du projet</a>."
 
-; (optional) notice to display
-; notice = "Note: This is a test service: Data may be deleted anytime. Kittens will die if you abuse this service."
+# (optionnel) message d'avertissement à afficher
+# notice = "Note : Ceci est un service de test, les données peuvent être supprimées à tout moment."
 
-; by default PrivateBin will guess the visitors language based on the browsers
-; settings. Optionally you can enable the language selection menu, which uses
-; a session cookie to store the choice until the browser is closed.
+# Par défaut, PrivateBin détecte la langue du visiteur via le navigateur.
+# Vous pouvez activer le menu de sélection de langue (stocké en cookie de session).
 languageselection = false
 
-; set the language your installs defaults to, defaults to English
-; if this is set and language selection is disabled, this will be the only language
-; languagedefault = "en"
+# Langue par défaut de l'installation (si le menu de langue est désactivé, ce sera la seule langue)
+# languagedefault = "en"
 
-; (optional) URL shortener address to offer after a new document is created.
-; It is suggested to only use this with self-hosted shorteners as this will leak
-; the documents encryption key.
-; urlshortener = "https://shortener.example.com/api?link="
+# (optionnel) adresse du raccourcisseur d'URL proposé après création d'un document.
+# À utiliser uniquement avec un service auto-hébergé (la clé de déchiffrement est dans l'URL).
+# urlshortener = "https://shortener.example.com/api?link="
 
-; (optional) Whether to shorten the URL by default when a new document is created.
-; If set to true, the "Shorten URL" functionality will be automatically called.
-; This only works if the "urlshortener" option is set.
-; shortenbydefault = false
+# (optionnel) Raccourcir l'URL automatiquement à la création d'un document (nécessite urlshortener)
+# shortenbydefault = false
 
-; (optional) Let users create a QR code for sharing the document URL with one click.
-; It works both when a new document is created and when you view a document.
-; qrcode = true
+# (optionnel) Permettre la création d'un QR code pour partager l'URL du document
+# qrcode = true
 
-; (optional) Let users send an email sharing the document URL with one click.
-; It works both when a new document is created and when you view a document.
-; email = true
+# (optionnel) Permettre l'envoi d'un email pour partager l'URL du document
+# email = true
 
-; (optional) IP based icons are a weak mechanism to detect if a comment was from
-; a different user when the same username was used in a comment. It might get
-; used to get the IP of a comment poster if the server salt is leaked and a
-; SHA512 HMAC rainbow table is generated for all (relevant) IPs.
-; Can be set to one these values:
-; "none" / "identicon" / "jdenticon" (default) / "vizhash".
-; icon = "none"
+# (optionnel) Les icônes basées sur l'IP sont un mécanisme faible pour distinguer les auteurs de commentaires.
+# Peut être : "none" / "identicon" / "jdenticon" (défaut) / "vizhash".
+# icon = "none"
 
 ; Content Security Policy headers allow a website to restrict what sources are
 ; allowed to be accessed in its context. You need to change this if you added
@@ -307,3 +288,4 @@ dir = PATH "data"
 ; these for all js files used. See:
 ; https://github.com/PrivateBin/PrivateBin/wiki/FAQ#user-content-how-to-make-privatebin-work-when-i-have-changed-some-javascript-files
 ;js/privatebin.js = "sha512-[…]"
+*/

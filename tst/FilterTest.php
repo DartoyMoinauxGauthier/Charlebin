@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use PrivateBin\Filter;
@@ -7,17 +9,17 @@ class FilterTest extends TestCase
 {
     public function testFilterMakesTimesHumanlyReadable()
     {
-        $this->assertEquals('5 minutes', Filter::formatHumanReadableTime('5min'));
-        $this->assertEquals('90 seconds', Filter::formatHumanReadableTime('90sec'));
-        $this->assertEquals('1 week', Filter::formatHumanReadableTime('1week'));
-        $this->assertEquals('6 months', Filter::formatHumanReadableTime('6months'));
+        $this->assertEquals('5 minutes', Filter::formatHumanReadableTime(5, 'min'));
+        $this->assertEquals('90 seconds', Filter::formatHumanReadableTime(90, 'sec'));
+        $this->assertEquals('1 week', Filter::formatHumanReadableTime(1, 'week'));
+        $this->assertEquals('6 months', Filter::formatHumanReadableTime(6, 'months'));
     }
 
     public function testFilterFailTimesHumanlyReadable()
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(30);
-        Filter::formatHumanReadableTime('five_minutes');
+        Filter::formatHumanReadableTime(5, 'five_minutes');
     }
 
     public function testFilterMakesSizesHumanlyReadable()

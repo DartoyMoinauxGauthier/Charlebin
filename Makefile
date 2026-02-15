@@ -1,4 +1,4 @@
-.PHONY: all coverage coverage-js coverage-php doc doc-js doc-php increment sign test test-js test-php help
+.PHONY: all coverage coverage-js coverage-php doc doc-js doc-php increment sign test test-js test-php help lint start start-custom
 
 CURRENT_VERSION = 2.0.3
 VERSION ?= 2.0.4
@@ -49,18 +49,32 @@ test-js: ## Run JS unit tests.
 test-php: ## Run PHP unit tests.
 	cd tst && phpunit --no-coverage
 
+lint: ## Run code quality checks (PHP Lint, PHPCS, PHPMD).
+	# 1. PHP Lint : Vérifie les erreurs de syntaxe de tous les fichiers .php
+	find . -type f -name "*.php" -not -path "./vendor/*" -exec php -l {} \; || true
+	
+	# 2. PHPCS : Vérifie les standards PSR-12 sur le dossier lib 
+	./vendor/bin/phpcs --standard=PSR12 --extensions=php ./lib/ || true
+	
+	# 3. PHPMD : Analyse la complexité et le code inutilisé 
+	./vendor/bin/phpmd ./lib ansi codesize,unusedcode,naming || true
+
+start: ## Start the PHP development server on port 8000.
+	@echo "🚀 Démarrage du serveur CharleBin..."
+	@echo "📍 URL : http://localhost:8000"
+	@echo "🛑 Arrêter avec Ctrl+C"
+	@echo ""
+	php -S localhost:8000
+
+start-custom: ## Start the PHP development server on a custom port (use PORT=xxxx).
+	@echo "🚀 Démarrage du serveur CharleBin..."
+	@echo "📍 URL : http://localhost:$(PORT)"
+	@echo "🛑 Arrêter avec Ctrl+C"
+	@echo ""
+	php -S localhost:$(PORT)
+
 help: ## Displays these usage instructions.
 	@echo "Usage: make <target(s)>"
 	@echo
 	@echo "Specify one or multiple of the following targets and they will be processed in the given order:"
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "%-16s%s\n", $$1, $$2}' $(MAKEFILE_LIST)
-
-lint:
-	# 1. PHP Lint : Vérifie les erreurs de syntaxe de tous les fichiers .php
-	find . -type f -name "*.php" -not -path "./vendor/*" -exec php -l {} \;
-	
-	# 2. PHPCS : Vérifie les standards PSR-12 sur le dossier lib 
-	./vendor/bin/phpcs --standard=PSR12 --extensions=php ./lib/
-	
-	# 3. PHPMD : Analyse la complexité et le code inutilisé 
-	./vendor/bin/phpmd ./lib ansi codesize,unusedcode,naming

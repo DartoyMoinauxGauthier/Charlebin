@@ -32,6 +32,8 @@ jobs:
           if [ -f js/package.json ]; then
             cd js && npm ci
           fi
+      - name: Lint Action
+        uses: wearerequired/lint-action@v2.3.0
 
       - name: Run ESLint
         run: |

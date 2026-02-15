@@ -24,32 +24,63 @@ use Exception;
 class Filter
 {
     /**
-     * format a given time string into a human readable label (localized)
+     * Format a given time into a human readable label (localized).
      *
-     * accepts times in the format "[integer][time unit]"
+     * This version accepts two arguments: an integer value and a unit string.
+     * Examples: `formatHumanReadableTime(5, 'min')` -> "5 minutes".
      *
      * @access public
      * @static
-     * @param  string $time
+     * @param  int    $value
+     * @param  string $unit
      * @throws Exception
      * @return string
      */
-    public static function formatHumanReadableTime($time)
+    public static function formatHumanReadableTime(int $value, string $unit)
     {
-        if (preg_match('/^(\d+) *(\w+)$/', $time, $matches) !== 1) {
-            throw new Exception("Error parsing time format '$time'", 30);
-        }
-        switch ($matches[2]) {
+        $unit = trim(strtolower($unit));
+
+        // normalize common shortcuts
+        switch ($unit) {
             case 'sec':
-                $unit = 'second';
+            case 'second':
+            case 'seconds':
+                $base = 'second';
                 break;
             case 'min':
-                $unit = 'minute';
+            case 'minute':
+            case 'minutes':
+                $base = 'minute';
+                break;
+            case 'hour':
+            case 'hours':
+                $base = 'hour';
+                break;
+            case 'day':
+            case 'days':
+                $base = 'day';
+                break;
+            case 'week':
+            case 'weeks':
+                $base = 'week';
+                break;
+            case 'month':
+            case 'months':
+                $base = 'month';
+                break;
+            case 'year':
+            case 'years':
+                $base = 'year';
                 break;
             default:
-                $unit = rtrim($matches[2], 's');
+                // try to strip a trailing 's' and accept that
+                $base = rtrim($unit, 's');
+                if ($base === '') {
+                    throw new Exception("Error parsing time format '{$value}{$unit}'", 30);
+                }
         }
-        return I18n::_(array('%d ' . $unit, '%d ' . $unit . 's'), (int) $matches[1]);
+
+        return I18n::_(array('%d ' . $base, '%d ' . $base . 's'), $value);
     }
 
     /**
